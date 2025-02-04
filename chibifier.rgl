@@ -1,0 +1,33 @@
+#
+# rgl layout text file (v4.0) - raygui layout file generated using rGuiLayout
+#
+# Number of controls:     21
+#
+# Ref. window:    r <x> <y> <width> <height>
+# Anchor info:    a <id> <name> <posx> <posy> <enabled>
+# Control info:   c <id> <type> <name> <rectangle> <anchor_id> <text>
+#
+r 0 40 -1 -1
+a 001 anchor01 0 0 1
+a 002 anchor02 72 216 1
+c 000 0 WindowBox000 0 0 480 408 1 Spawn Chibi
+c 001 5 CloseButton 336 360 120 24 1 Close
+c 002 5 SpawnButton 24 360 120 24 1 Spawn Chibi
+c 003 12 TextBox003 168 48 240 24 1 Path/to/file
+c 004 4 Label004 72 48 96 24 1 Image Path :
+c 005 14 ChibiWidth 168 96 72 24 1 
+c 006 4 Label006 240 96 12 24 1 x
+c 007 14 ChibiHeight 248 96 72 24 1 
+c 008 4 Label008 72 96 96 24 1 Dimensions:
+c 009 14 XPos 168 144 72 24 1 
+c 010 14 YPos 248 144 72 24 1 
+c 011 4 Label011 240 144 12 24 1 x
+c 012 4 Label012 72 144 96 24 1 Position:
+c 013 7 HideOnHover 168 192 24 24 1 
+c 014 4 Label014 72 192 96 24 1 Hide on Hover:
+c 015 12 CGID 168 288 208 24 1 123456789ABCDEFGHIJK
+c 016 14 ChibiIndex 384 288 24 24 1 
+c 017 4 Label017 72 288 48 24 0 CGID:
+c 018 1 GroupBox018 -24 16 384 104 2 Shared Chibis (WIP)
+c 019 4 Label019 0 24 48 24 2 Server:
+c 020 12 ServerIP 168 240 240 24 1 192.168.122.6/cgi-bin/cgi
