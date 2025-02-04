@@ -40,7 +40,7 @@ int main() {
     const char *WindowBox000Text = "Spawn Chibi";
     const char *CloseButtonText = "Close";
     const char *SpawnButtonText = "Spawn Chibi";
-    const char *Label004Text = "Image Path :";
+    const char *Label004Text = "Image Path:";
     const char *Label006Text = "x";
     const char *Label008Text = "Dimensions:";
     const char *Label011Text = "x";
