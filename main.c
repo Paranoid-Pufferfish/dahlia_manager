@@ -15,7 +15,7 @@
 #include <raylib.h>
 
 #define RAYGUI_IMPLEMENTATION
-#include "raygui.h"
+#include "raygui/src/raygui.h"
 
 //----------------------------------------------------------------------------------
 // Controls Functions Declaration
@@ -32,7 +32,7 @@ int main() {
     //---------------------------------------------------------------------------------------
     int screenWidth = 480;
     int screenHeight = 408;
-
+    SetConfigFlags(FLAG_WINDOW_UNDECORATED);
     InitWindow(screenWidth, screenHeight, "chibi_manager");
 
     // chibi_manager: controls initialization
@@ -76,6 +76,7 @@ int main() {
 
     SetTargetFPS(60);
     //--------------------------------------------------------------------------------------
+    GuiLoadStyle("../raygui/styles/bluish/style_bluish.rgs");
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
