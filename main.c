@@ -11,12 +11,14 @@
 *   usage in any other form by expresely written permission.
 *
 **********************************************************************************************/
+#include <unistd.h>
 
 #include <raylib.h>
 
 #define RAYGUI_IMPLEMENTATION
 #include "raygui/src/raygui.h"
 
+char *home;
 const char *WindowBox000Text = "Spawn Chibi";
 const char *CloseButtonText = "Close";
 const char *SpawnButtonText = "Spawn Chibi";
@@ -37,7 +39,7 @@ Vector2 anchor02 = {72, 216};
 
 bool WindowBox000Active = true;
 bool TextBox003EditMode = false;
-char ChibiPath[128] = "Path/to/file";
+char ChibiPath[4096] = "/path/to/file";
 bool ChibiWidthEditMode = false;
 int ChibiWidthValue = 0;
 bool ChibiHeightEditMode = false;
@@ -53,6 +55,9 @@ bool ChibiIndexEditMode = false;
 int ChibiIndexValue = 0;
 bool ServerIPEditMode = false;
 char ServerIPText[128] = "192.168.122.6/cgi-bin/cgi";
+bool showMessageBox;
+bool launch = false;
+char buf[2048];
 //----------------------------------------------------------------------------------
 // Controls Functions Declaration
 //----------------------------------------------------------------------------------
@@ -61,10 +66,17 @@ static void CloseButton();
 static void SpawnButton();
 
 static void GetSizeFromImage();
+
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
 int main() {
+#ifdef _WIN32
+    home = getenv("LocalAppData");
+#else
+    home = getenv("HOME");
+#endif
+
     // Initialization
     //---------------------------------------------------------------------------------------
     int screenWidth = 480;
@@ -101,7 +113,7 @@ int main() {
             WindowBox000Active = !GuiWindowBox((Rectangle){anchor01.x + 0, anchor01.y + 0, 480, 408}, WindowBox000Text);
             if (GuiButton((Rectangle){anchor01.x + 336, anchor01.y + 360, 120, 24}, CloseButtonText)) CloseButton();
             if (GuiButton((Rectangle){anchor01.x + 24, anchor01.y + 360, 120, 24}, SpawnButtonText)) SpawnButton();
-            if (GuiTextBox((Rectangle){anchor01.x + 168, anchor01.y + 48, 240, 24}, ChibiPath, 128,
+            if (GuiTextBox((Rectangle){anchor01.x + 168, anchor01.y + 48, 240, 24}, ChibiPath, 4096,
                            TextBox003EditMode))
                 TextBox003EditMode = !TextBox003EditMode;
             GuiLabel((Rectangle){anchor01.x + 72, anchor01.y + 48, 96, 24}, Label004Text);
@@ -133,7 +145,14 @@ int main() {
             GuiLabel((Rectangle){anchor02.x + 0, anchor02.y + 24, 48, 24}, Label019Text);
             if (GuiTextBox((Rectangle){anchor02.x + 96, anchor02.y + 24, 240, 24}, ServerIPText, 128, ServerIPEditMode))
                 ServerIPEditMode = !ServerIPEditMode;
-            if (GuiButton((Rectangle){ 336, 96, 72, 24 }, GetSizeFromImageText)) GetSizeFromImage();
+            if (GuiButton((Rectangle){336, 96, 72, 24}, GetSizeFromImageText)) GetSizeFromImage();
+            if (showMessageBox) {
+                int result = GuiMessageBox((Rectangle){
+                                               (float) screenWidth / 2 - 125, (float) screenHeight / 2 - 50, 250, 100
+                                           },
+                                           "Invalid Image!!", "Make sure that your path is correct!!", "Understood!");
+                if (result >= 0) showMessageBox = false;
+            }
         } else
             break;
 
@@ -144,11 +163,22 @@ int main() {
         //----------------------------------------------------------------------------------
     }
 
+    if (launch) {
+        sprintf(buf, "chibi %s -f %s -p %dx%d -s %dx%d", (HideOnHoverChecked ? "-t" : ""), ChibiPath, XPosValue,
+                YPosValue, ChibiWidthValue, ChibiHeightValue);
+        TraceLog(LOG_INFO, buf);
+    }
     // De-Initialization
     //--------------------------------------------------------------------------------------
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
-
+    if (launch) {
+        if (fork() == 0) {
+            char *array[] = {"/bin/sh", "-c", buf, nullptr};
+            extern char **environ;
+            execve("/bin/sh", array, environ);
+        }
+    }
     return 0;
 }
 
@@ -160,21 +190,32 @@ static void CloseButton() {
 }
 
 static void SpawnButton() {
+    if (ChibiPath[0] == '~') {
+        strncpy(buf,home,510);
+        strncat(buf,ChibiPath+1,3586);
+        strncpy(ChibiPath,buf,4096);
+    }
     Image tmp = LoadImage(ChibiPath);
     if (!IsImageValid(tmp))
-        TraceLog(LOG_INFO,"Invalid Image !!");
+        showMessageBox = true;
     else {
         TraceLog(LOG_INFO, "Spawning : %s at %dx%d size %dx%d. %s", ChibiPath, XPosValue, YPosValue, ChibiWidthValue,
                  ChibiHeightValue, HideOnHoverChecked ? "Hide on Hover" : "Do not Hide on Hover");
         UnloadImage(tmp);
+        launch = true;
+        WindowBox000Active = false;
     }
-
 }
-static void GetSizeFromImage()
-{
+
+static void GetSizeFromImage() {
+    if (ChibiPath[0] == '~') {
+        strncpy(buf,home,510);
+        strncat(buf,ChibiPath+1,3586);
+        strncpy(ChibiPath,buf,4096);
+    }
     Image tmp = LoadImage(ChibiPath);
     if (!IsImageValid(tmp))
-        TraceLog(LOG_INFO,"Invalid Image !!");
+        showMessageBox = true;
     else {
         ChibiWidthValue = tmp.width;
         ChibiHeightValue = tmp.height;
