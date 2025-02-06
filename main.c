@@ -160,10 +160,24 @@ static void CloseButton() {
 }
 
 static void SpawnButton() {
-    TraceLog(LOG_INFO, "Spawning : %s at %dx%d size %dx%d. %s", ChibiPath, XPosValue, YPosValue, ChibiWidthValue,
-             ChibiHeightValue, HideOnHoverChecked ? "Hide on Hover" : "Do not Hide on Hover");
+    Image tmp = LoadImage(ChibiPath);
+    if (!IsImageValid(tmp))
+        TraceLog(LOG_INFO,"Invalid Image !!");
+    else {
+        TraceLog(LOG_INFO, "Spawning : %s at %dx%d size %dx%d. %s", ChibiPath, XPosValue, YPosValue, ChibiWidthValue,
+                 ChibiHeightValue, HideOnHoverChecked ? "Hide on Hover" : "Do not Hide on Hover");
+        UnloadImage(tmp);
+    }
+
 }
 static void GetSizeFromImage()
 {
-    // TODO: Implement control logic
+    Image tmp = LoadImage(ChibiPath);
+    if (!IsImageValid(tmp))
+        TraceLog(LOG_INFO,"Invalid Image !!");
+    else {
+        ChibiWidthValue = tmp.width;
+        ChibiHeightValue = tmp.height;
+        UnloadImage(tmp);
+    }
 }
