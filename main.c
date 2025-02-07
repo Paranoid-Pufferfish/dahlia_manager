@@ -150,7 +150,7 @@ int main() {
             if (GuiButton((Rectangle){336, 96, 72, 24}, GetSizeFromImageText)) GetSizeFromImage();
             if (showMessageBox) {
                 int result = GuiMessageBox((Rectangle){
-                                               (float) screenWidth / 2 - 125, (float) screenHeight / 2 - 50, 250, 100
+                                               (float) screenWidth / 2 - 200, (float) screenHeight / 2 - 50, 400, 100
                                            },
                                            "Invalid Image!!", "Make sure that your path is correct or it's a valid Image !!", "Understood!");
                 if (result >= 0) showMessageBox = false;
