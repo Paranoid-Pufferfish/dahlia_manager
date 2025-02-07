@@ -153,7 +153,7 @@ int main() {
                 int result = GuiMessageBox((Rectangle){
                                                (float) screenWidth / 2 - 200, (float) screenHeight / 2 - 50, 400, 100
                                            },
-                                           "Invalid Image!!", "Make sure that your path is correct or it's a valid Image !!", "Understood!");
+                                           "Invalid Image!!", "Make sure that your path is correct or is a valid Image !!", "Understood!");
                 if (result >= 0) showMessageBox = false;
             }
             if (GuiButton((Rectangle){anchor01.x + 408, anchor01.y + 48, 24, 24}, "#05#")) PickFile();
