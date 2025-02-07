@@ -134,7 +134,7 @@ int main() {
                 ChibiIndexEditMode = !ChibiIndexEditMode;
             GuiLabel((Rectangle){anchor02.x + 0, anchor02.y + 72, 48, 24}, Label017Text);
             GuiGroupBox((Rectangle){anchor02.x + -24, anchor02.y + 16, 384, 104}, GroupBox018Text);
-            GuiLabel((Rectangle){anchor02.x + 0, anchor02.y + 24, 48, 24}, Label019Text);
+            GuiLabel((Rectangle){anchor02.x + 0, anchor02.y + 24, 88, 24}, Label019Text);
             if (GuiTextBox((Rectangle){anchor02.x + 96, anchor02.y + 24, 240, 24}, ServerIPText, 128, ServerIPEditMode))
                 ServerIPEditMode = !ServerIPEditMode;
             if (GuiButton((Rectangle){336, 96, 72, 24}, GetSizeFromImageText)) GetSizeFromImage();
