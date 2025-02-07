@@ -228,7 +228,7 @@ static void GetSizeFromImage() {
 }
 
 static void PickFile() {
-    char *path = tinyfd_openFileDialog("Pick Chibi", "../", 0, nullptr, nullptr, 0);
+    char *path = tinyfd_openFileDialog("Pick Chibi", "./", 0, nullptr, nullptr, 0);
     if (path != nullptr) {
         Image tmp = LoadImage(path);
         if (!IsImageValid(tmp))
