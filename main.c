@@ -17,6 +17,8 @@
 #include "tinyfiledialogs/tinyfiledialogs.h"
 #define RAYGUI_IMPLEMENTATION
 #include "raygui/src/raygui.h"
+#include "raygui/styles/bluish/style_bluish.h"
+#include "raygui/styles/dark/style_dark.h"
 
 char *home;
 const char *WindowBox000Text = "Spawn Chibi";
@@ -94,24 +96,12 @@ int main() {
 
     SetTargetFPS(60);
     //--------------------------------------------------------------------------------------
-    GuiLoadStyle("../raygui/styles/bluish/style_bluish.rgs");
-
+    GuiLoadStyleDark();
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        // Update
-        //----------------------------------------------------------------------------------
-        // TODO: Implement required update logic
-        //----------------------------------------------------------------------------------
-
-        // Draw
-        //----------------------------------------------------------------------------------
         BeginDrawing();
-
         ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
-
-        // raygui: controls drawing
-        //----------------------------------------------------------------------------------
         if (WindowBox000Active) {
             WindowBox000Active = !GuiWindowBox((Rectangle){anchor01.x + 0, anchor01.y + 0, 480, 408}, WindowBox000Text);
             if (GuiButton((Rectangle){anchor01.x + 336, anchor01.y + 360, 120, 24}, CloseButtonText)) CloseButton();
@@ -140,7 +130,7 @@ int main() {
             GuiLabel((Rectangle){anchor01.x + 72, anchor01.y + 192, 96, 24}, Label014Text);
             if (GuiTextBox((Rectangle){anchor02.x + 96, anchor02.y + 72, 208, 24}, CGIDText, 128, CGIDEditMode))
                 CGIDEditMode = !CGIDEditMode;
-            if (GuiValueBox((Rectangle){anchor02.x + 312, anchor02.y + 72, 24, 24}, nullptr, &ChibiIndexValue, 0, 9999,
+            if (GuiValueBox((Rectangle){anchor02.x + 312, anchor02.y + 72, 24, 24}, nullptr, &ChibiIndexValue, 0, 99,
                             ChibiIndexEditMode))
                 ChibiIndexEditMode = !ChibiIndexEditMode;
             GuiLabel((Rectangle){anchor02.x + 0, anchor02.y + 72, 48, 24}, Label017Text);
@@ -153,7 +143,8 @@ int main() {
                 int result = GuiMessageBox((Rectangle){
                                                (float) screenWidth / 2 - 200, (float) screenHeight / 2 - 50, 400, 100
                                            },
-                                           "Invalid Image!!", "Make sure that your path is correct or is a valid Image !!", "Understood!");
+                                           "Invalid Image!!",
+                                           "Make sure that your path is correct or is a valid Image !!", "Understood!");
                 if (result >= 0) showMessageBox = false;
             }
             if (GuiButton((Rectangle){anchor01.x + 408, anchor01.y + 48, 24, 24}, "#05#")) PickFile();
@@ -234,6 +225,6 @@ static void PickFile() {
         if (!IsImageValid(tmp))
             showMessageBox = true;
         else
-            strncpy(ChibiPath,path,4095);
+            strncpy(ChibiPath, path, 4095);
     }
 }
