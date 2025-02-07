@@ -17,7 +17,6 @@
 #include "tinyfiledialogs/tinyfiledialogs.h"
 #define RAYGUI_IMPLEMENTATION
 #include "raygui/src/raygui.h"
-#include "raygui/styles/bluish/style_bluish.h"
 #include "raygui/styles/dark/style_dark.h"
 
 char *home;
