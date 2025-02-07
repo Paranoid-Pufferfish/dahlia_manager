@@ -20,7 +20,7 @@
 
 char *home;
 const char *WindowBox000Text = "Spawn Chibi";
-const char *CloseButtonText = "#05#Close";
+const char *CloseButtonText = "Close";
 const char *SpawnButtonText = "Spawn Chibi";
 const char *Label004Text = "Image Path:";
 const char *Label006Text = "x";
