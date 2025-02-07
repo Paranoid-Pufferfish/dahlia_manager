@@ -12,15 +12,15 @@
 *
 **********************************************************************************************/
 #include <unistd.h>
-
 #include <raylib.h>
-
+#include <string.h>
+#include "tinyfiledialogs/tinyfiledialogs.h"
 #define RAYGUI_IMPLEMENTATION
 #include "raygui/src/raygui.h"
 
 char *home;
 const char *WindowBox000Text = "Spawn Chibi";
-const char *CloseButtonText = "Close";
+const char *CloseButtonText = "#05#Close";
 const char *SpawnButtonText = "Spawn Chibi";
 const char *Label004Text = "Image Path:";
 const char *Label006Text = "x";
@@ -66,6 +66,8 @@ static void CloseButton();
 static void SpawnButton();
 
 static void GetSizeFromImage();
+
+static void PickFile();
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -113,7 +115,7 @@ int main() {
             WindowBox000Active = !GuiWindowBox((Rectangle){anchor01.x + 0, anchor01.y + 0, 480, 408}, WindowBox000Text);
             if (GuiButton((Rectangle){anchor01.x + 336, anchor01.y + 360, 120, 24}, CloseButtonText)) CloseButton();
             if (GuiButton((Rectangle){anchor01.x + 24, anchor01.y + 360, 120, 24}, SpawnButtonText)) SpawnButton();
-            if (GuiTextBox((Rectangle){anchor01.x + 168, anchor01.y + 48, 240, 24}, ChibiPath, 4096,
+            if (GuiTextBox((Rectangle){anchor01.x + 168, anchor01.y + 48, 232, 24}, ChibiPath, 4096,
                            TextBox003EditMode))
                 TextBox003EditMode = !TextBox003EditMode;
             GuiLabel((Rectangle){anchor01.x + 72, anchor01.y + 48, 96, 24}, Label004Text);
@@ -150,9 +152,10 @@ int main() {
                 int result = GuiMessageBox((Rectangle){
                                                (float) screenWidth / 2 - 125, (float) screenHeight / 2 - 50, 250, 100
                                            },
-                                           "Invalid Image!!", "Make sure that your path is correct!!", "Understood!");
+                                           "Invalid Image!!", "Make sure that your path is correct or it's a valid Image !!", "Understood!");
                 if (result >= 0) showMessageBox = false;
             }
+            if (GuiButton((Rectangle){anchor01.x + 408, anchor01.y + 48, 24, 24}, "#05#")) PickFile();
         } else
             break;
 
@@ -191,9 +194,9 @@ static void CloseButton() {
 
 static void SpawnButton() {
     if (ChibiPath[0] == '~') {
-        strncpy(buf,home,510);
-        strncat(buf,ChibiPath+1,3586);
-        strncpy(ChibiPath,buf,4096);
+        strncpy(buf, home, 510);
+        strncat(buf, ChibiPath + 1, 2048 - 510);
+        strncpy(ChibiPath, buf, 2048);
     }
     Image tmp = LoadImage(ChibiPath);
     if (!IsImageValid(tmp))
@@ -209,9 +212,9 @@ static void SpawnButton() {
 
 static void GetSizeFromImage() {
     if (ChibiPath[0] == '~') {
-        strncpy(buf,home,510);
-        strncat(buf,ChibiPath+1,3586);
-        strncpy(ChibiPath,buf,4096);
+        strncpy(buf, home, 510);
+        strncat(buf, ChibiPath + 1, 2048 - 510);
+        strncpy(ChibiPath, buf, 2048);
     }
     Image tmp = LoadImage(ChibiPath);
     if (!IsImageValid(tmp))
@@ -220,5 +223,16 @@ static void GetSizeFromImage() {
         ChibiWidthValue = tmp.width;
         ChibiHeightValue = tmp.height;
         UnloadImage(tmp);
+    }
+}
+
+static void PickFile() {
+    char *path = tinyfd_openFileDialog("Pick Chibi", "../", 0, nullptr, nullptr, 0);
+    if (path != nullptr) {
+        Image tmp = LoadImage(path);
+        if (!IsImageValid(tmp))
+            showMessageBox = true;
+        else
+            strncpy(ChibiPath,path,4095);
     }
 }
