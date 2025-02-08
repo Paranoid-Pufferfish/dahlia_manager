@@ -85,9 +85,9 @@ int main() {
     int screenWidth = 480;
     int screenHeight = 408;
     SetConfigFlags(FLAG_WINDOW_UNDECORATED);
-    InitWindow(screenWidth, screenHeight, "chibi_manager");
+    InitWindow(screenWidth, screenHeight, "dahlia_manager");
 
-    // chibi_manager: controls initialization
+    // dahlia_manager: controls initialization
     //----------------------------------------------------------------------------------
 
 
@@ -158,7 +158,7 @@ int main() {
     }
 
     if (launch) {
-        sprintf(buf, "chibi %s -f %s -p %dx%d -s %dx%d", (HideOnHoverChecked ? "-t" : ""), ChibiPath, XPosValue,
+        sprintf(buf, "dahlia %s -f %s -p %dx%d -s %dx%d", (HideOnHoverChecked ? "-t" : ""), ChibiPath, XPosValue,
                 YPosValue, ChibiWidthValue, ChibiHeightValue);
         TraceLog(LOG_INFO, buf);
     }
