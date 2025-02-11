@@ -42,9 +42,9 @@ bool WindowBox000Active = true;
 bool TextBox003EditMode = false;
 char ChibiPath[4096] = "/path/to/file";
 bool ChibiWidthEditMode = false;
-int ChibiWidthValue = 0;
+int ChibiWidthValue = 200;
 bool ChibiHeightEditMode = false;
-int ChibiHeightValue = 0;
+int ChibiHeightValue = 200;
 bool XPosEditMode = false;
 int XPosValue = 0;
 bool YPosEditMode = false;
@@ -223,7 +223,9 @@ static void PickFile() {
         Image tmp = LoadImage(path);
         if (!IsImageValid(tmp))
             showMessageBox = true;
-        else
+        else {
             strncpy(ChibiPath, path, 4095);
+            GetSizeFromImage();
+        }
     }
 }
